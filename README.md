@@ -1,50 +1,32 @@
-# Welcome to your Expo app 👋
+Smart Glove Mobile App – UI Module
+Overview
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This module contains the user interface for the Smart Glove System, a project to assist speech-impaired individuals by converting hand gestures into text and voice output.
 
-## Get started
+Features
 
-1. Install dependencies
+Profile Screen – User profile interface with navigation to settings
 
-   ```bash
-   npm install
-   ```
+Settings & Accessibility
 
-2. Start the app
+Language selection: English / Sinhala / Tamil
 
-   ```bash
-   npx expo start
-   ```
+Dark mode support
 
-In the output, you'll find options to open the app in a
+Large text & high contrast mode
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Simple interface & vibration feedback
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Technologies
 
-## Get a fresh project
+React Native + TypeScript (.tsx)
 
-When you're ready, run:
+Expo & Expo Router
 
-```bash
-npm run reset-project
-```
+Expo Vector Icons
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Git & GitHub (branch-based collaboration)
 
-## Learn more
+Notes
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This module focuses on UI/UX and accessibility. Hardware integration and backend features are in other modules.
