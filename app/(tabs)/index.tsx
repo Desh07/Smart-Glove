@@ -1,4 +1,6 @@
+import { useTheme } from "@/contexts/ThemeContext";
 import * as ImagePicker from "expo-image-picker";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   Alert,
@@ -15,11 +17,12 @@ import {
 } from "react-native";
 
 export default function ProfileTab() {
+  const router = useRouter();
+  const { colors, language, setLanguage, darkMode } = useTheme();
   const [profileUri, setProfileUri] = useState<string | null>(null);
   const [name, setName] = useState("John Doe");
   const [email] = useState("john.doe@example.com");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [lang, setLang] = useState<"en" | "si" | "ta">("en");
 
   // Language labels always shown in their native script
   const langLabels = {
@@ -37,12 +40,12 @@ export default function ProfileTab() {
       preferredLanguage: "Preferred Language",
       menu: "Menu",
       menuItems: [
-        { t: "Edit Profile", i: "✏️" },
-        { t: "Settings", i: "⚙️" },
-        { t: "Connected Devices", i: "🔗" },
-        { t: "Help & Support", i: "❓" },
-        { t: "About", i: "ℹ️" },
-        { t: "Logout", i: "🚪" },
+        { key: "edit", t: "Edit Profile", i: "✏️" },
+        { key: "settings", t: "Settings", i: "⚙️" },
+        { key: "devices", t: "Connected Devices", i: "🔗" },
+        { key: "support", t: "Help & Support", i: "❓" },
+        { key: "about", t: "About", i: "ℹ️" },
+        { key: "logout", t: "Logout", i: "🚪" },
       ],
     },
     si: {
@@ -53,12 +56,12 @@ export default function ProfileTab() {
       preferredLanguage: "වඩා කැමති භාෂාව",
       menu: "මෙනු",
       menuItems: [
-        { t: "පැතිකඩ සංස්කරණය", i: "✏️" },
-        { t: "සැකසුම්", i: "⚙️" },
-        { t: "සම්බන්ධිත උපාංග", i: "🔗" },
-        { t: "උදව් සහ සහය", i: "❓" },
-        { t: "විස්තර", i: "ℹ️" },
-        { t: "ඉවත් වෙන්න", i: "🚪" },
+        { key: "edit", t: "පැතිකඩ සංස්කරණය", i: "✏️" },
+        { key: "settings", t: "සැකසුම්", i: "⚙️" },
+        { key: "devices", t: "සම්බන්ධිත උපාංග", i: "🔗" },
+        { key: "support", t: "උදව් සහ සහය", i: "❓" },
+        { key: "about", t: "විස්තර", i: "ℹ️" },
+        { key: "logout", t: "ඉවත් වෙන්න", i: "🚪" },
       ],
     },
     ta: {
@@ -69,15 +72,15 @@ export default function ProfileTab() {
       preferredLanguage: "விருப்ப மொழி",
       menu: "பட்டி",
       menuItems: [
-        { t: "சுயவிவரத்தைத் திருத்து", i: "✏️" },
-        { t: "அமைப்புகள்", i: "⚙️" },
-        { t: "இணைக்கப்பட்ட சாதனங்கள்", i: "🔗" },
-        { t: "உதவி & ஆதரவு", i: "❓" },
-        { t: "பற்றி", i: "ℹ️" },
-        { t: "வெளியேறு", i: "🚪" },
+        { key: "edit", t: "சுயவிவரத்தைத் திருத்து", i: "✏️" },
+        { key: "settings", t: "அமைப்புகள்", i: "⚙️" },
+        { key: "devices", t: "இணைக்கப்பட்ட சாதனங்கள்", i: "🔗" },
+        { key: "support", t: "உதவி & ஆதரவு", i: "❓" },
+        { key: "about", t: "பற்றி", i: "ℹ️" },
+        { key: "logout", t: "வெளியேறு", i: "🚪" },
       ],
     },
-  }[lang];
+  }[language];
 
   const requestPermissions = async () => {
     if (Platform.OS !== "web") {
@@ -126,13 +129,13 @@ export default function ProfileTab() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header with hamburger */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: colors.headerBg }]}>
         {/* Left: App logo text */}
         <View style={styles.logoWrap}>
           <Text style={styles.logoText}>
-            <Text style={styles.logoSSL}>SSL </Text>
+            <Text style={[styles.logoSSL, { color: colors.text }]}>SSL </Text>
             <Text style={styles.logoGLOVE}>GLOVE</Text>
           </Text>
         </View>
@@ -140,23 +143,23 @@ export default function ProfileTab() {
         {/* Right: Hamburger */}
         <TouchableOpacity style={styles.menuButton} onPress={() => setMenuOpen(true)}>
           <View style={styles.hamburger}>
-            <View style={styles.hamburgerLine} />
-            <View style={styles.hamburgerLine} />
-            <View style={styles.hamburgerLine} />
+            <View style={[styles.hamburgerLine, { backgroundColor: colors.text }]} />
+            <View style={[styles.hamburgerLine, { backgroundColor: colors.text }]} />
+            <View style={[styles.hamburgerLine, { backgroundColor: colors.text }]} />
           </View>
         </TouchableOpacity>
       </View>
 
       {/* Centered title below the header bar */}
-      <View style={styles.titleBar}>
+      <View style={[styles.titleBar, { backgroundColor: colors.headerBg }]}>
         <View style={styles.titleBadge}>
-          <Text style={styles.headerTitle}>{t.profile}</Text>
+          <Text style={[styles.headerTitle, { color: darkMode ? "#8B0000" : colors.text }]}>{t.profile}</Text>
         </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Avatar and info */}
-        <View style={styles.profileSection}>
+        <View style={[styles.profileSection, { backgroundColor: colors.cardBackground }]}>
           <View style={styles.avatarWrap}>
             {profileUri ? (
               <Image source={{ uri: profileUri }} style={styles.avatar} />
@@ -170,32 +173,32 @@ export default function ProfileTab() {
             </TouchableOpacity>
           </View>
           <TextInput
-            style={styles.nameInput}
+            style={[styles.nameInput, { color: colors.text, backgroundColor: colors.inputBg, borderColor: colors.border }]}
             value={name}
             onChangeText={setName}
             placeholder={t.name}
-            placeholderTextColor="#999"
+            placeholderTextColor={colors.textSecondary}
           />
-          <Text style={styles.email}>{email}</Text>
+          <Text style={[styles.email, { color: colors.textSecondary }]}>{email}</Text>
         </View>
 
         {/* Account card */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>{t.account}</Text>
+        <View style={[styles.card, { backgroundColor: colors.cardBackground }]}>
+          <Text style={[styles.cardTitle, { color: colors.text }]}>{t.account}</Text>
           <View style={styles.row}>
-            <Text style={styles.label}>{t.name}</Text>
-            <Text style={styles.value}>{name}</Text>
+            <Text style={[styles.label, { color: colors.textSecondary }]}>{t.name}</Text>
+            <Text style={[styles.value, { color: colors.text }]}>{name}</Text>
           </View>
-          <View style={styles.divider} />
+          <View style={[styles.divider, { backgroundColor: colors.divider }]} />
           <View style={styles.row}>
-            <Text style={styles.label}>{t.email}</Text>
-            <Text style={styles.value}>{email}</Text>
+            <Text style={[styles.label, { color: colors.textSecondary }]}>{t.email}</Text>
+            <Text style={[styles.value, { color: colors.text }]}>{email}</Text>
           </View>
         </View>
 
         {/* Preferred Language card */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>{t.preferredLanguage}</Text>
+        <View style={[styles.card, { backgroundColor: colors.cardBackground }]}>
+          <Text style={[styles.cardTitle, { color: colors.text }]}>{t.preferredLanguage}</Text>
           <View style={styles.langRow}>
             {[
               { key: "en", label: langLabels.english },
@@ -206,14 +209,16 @@ export default function ProfileTab() {
                 key={opt.key}
                 style={[
                   styles.langChip,
-                  lang === (opt.key as any) && styles.langChipActive,
+                  { backgroundColor: colors.inputBg, borderColor: colors.border },
+                  language === (opt.key as any) && styles.langChipActive,
                 ]}
-                onPress={() => setLang(opt.key as any)}
+                onPress={() => setLanguage(opt.key as any)}
               >
                 <Text
                   style={[
                     styles.langChipText,
-                    lang === (opt.key as any) && styles.langChipTextActive,
+                    { color: colors.text },
+                    language === (opt.key as any) && styles.langChipTextActive,
                   ]}
                 >
                   {opt.label}
@@ -221,11 +226,11 @@ export default function ProfileTab() {
               </TouchableOpacity>
             ))}
           </View>
-          <Text style={styles.langHint}>
+          <Text style={[styles.langHint, { color: colors.textSecondary }]}>
             {/* Simple hint updated per language for clarity */}
-            {lang === "en"
+            {language === "en"
               ? "Changing the language applies to the entire app."
-              : lang === "si"
+              : language === "si"
               ? "භාෂාව වෙනස් කළ විට මුළු යෙදුමටම එය බලපායි."
               : "மொழி மாற்றம் செயலியின் அனைத்து பகுதிகளுக்கும் பொருந்தும்."}
           </Text>
@@ -244,11 +249,11 @@ export default function ProfileTab() {
           activeOpacity={1}
           onPress={() => setMenuOpen(false)}
         >
-          <View style={styles.menuPanel}>
-            <View style={styles.menuHeader}>
-              <Text style={styles.menuTitle}>{t.menu}</Text>
+          <View style={[styles.menuPanel, { backgroundColor: colors.cardBackground }]}>
+            <View style={[styles.menuHeader, { borderBottomColor: colors.divider }]}>
+              <Text style={[styles.menuTitle, { color: colors.text }]}>{t.menu}</Text>
               <TouchableOpacity onPress={() => setMenuOpen(false)}>
-                <Text style={styles.close}>✕</Text>
+                <Text style={[styles.close, { color: colors.textSecondary }]}>✕</Text>
               </TouchableOpacity>
             </View>
             {t.menuItems.map((m) => (
@@ -256,12 +261,21 @@ export default function ProfileTab() {
                 key={m.t}
                 style={styles.menuItem}
                 onPress={() => {
+                  if (m.key === "settings") {
+                    console.log("Settings clicked, navigating to accessibility");
+                    setMenuOpen(false);
+                    setTimeout(() => {
+                      router.push("/(tabs)/accessibility");
+                    }, 100);
+                    return;
+                  }
+
                   Alert.alert("Action", `${m.t} tapped`);
                   setMenuOpen(false);
                 }}
               >
                 <Text style={styles.menuIcon}>{m.i}</Text>
-                <Text style={styles.menuText}>{m.t}</Text>
+                <Text style={[styles.menuText, { color: colors.text }]}>{m.t}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -272,9 +286,8 @@ export default function ProfileTab() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f5f5f5" },
+  container: { flex: 1 },
   header: {
-    backgroundColor: "#fff",
     paddingTop: Platform.OS === "ios" ? 12 : (StatusBar.currentHeight || 0),
     paddingBottom: 12,
     paddingHorizontal: 16,
@@ -284,9 +297,9 @@ const styles = StyleSheet.create({
   },
   logoWrap: { flex: 1 },
   logoText: { fontSize: 18, fontWeight: "bold", letterSpacing: 0.5 },
-  logoSSL: { color: "#333" },
+  logoSSL: {},
   logoGLOVE: { color: "#E53935" },
-  titleBar: { backgroundColor: "#fff", alignItems: "center", paddingVertical: 12, elevation: 2 },
+  titleBar: { alignItems: "center", paddingVertical: 12, elevation: 2 },
   titleBadge: {
     paddingHorizontal: 18,
     paddingVertical: 6,
@@ -295,16 +308,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#f0caca",
   },
-  headerTitle: { color: "#333", fontSize: 20, fontWeight: "bold" },
+  headerTitle: { fontSize: 20, fontWeight: "bold" },
   menuButton: { padding: 8 },
   hamburger: { width: 24, height: 18, justifyContent: "space-between" },
-  hamburgerLine: { width: 24, height: 3, backgroundColor: "#333", borderRadius: 2 },
+  hamburgerLine: { width: 24, height: 3, borderRadius: 2 },
 
   scrollContent: { paddingBottom: 24 },
   profileSection: {
     alignItems: "center",
     paddingVertical: 28,
-    backgroundColor: "#fff",
     marginBottom: 16,
   },
   avatarWrap: { position: "relative", marginBottom: 12 },
@@ -342,35 +354,31 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   editIcon: { fontSize: 16 },
-  name: { fontSize: 22, fontWeight: "bold", color: "#333", marginTop: 6 },
+  name: { fontSize: 22, fontWeight: "bold", marginTop: 6 },
   nameInput: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "#333",
     marginTop: 6,
     paddingVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#e0e0e0",
-    backgroundColor: "#fafafa",
     textAlign: "center",
   },
-  email: { fontSize: 15, color: "#666", marginTop: 2 },
+  email: { fontSize: 15, marginTop: 2 },
 
   card: {
-    backgroundColor: "#fff",
     marginHorizontal: 20,
     marginBottom: 16,
     borderRadius: 12,
     padding: 16,
     elevation: 2,
   },
-  cardTitle: { fontSize: 18, fontWeight: "bold", color: "#333", marginBottom: 10 },
+  cardTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
   row: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 10 },
-  label: { fontSize: 14, color: "#666" },
-  value: { fontSize: 14, color: "#333", fontWeight: "600" },
-  divider: { height: 1, backgroundColor: "#eee" },
+  label: { fontSize: 14 },
+  value: { fontSize: 14, fontWeight: "600" },
+  divider: { height: 1 },
 
   overlay: {
     flex: 1,
@@ -381,7 +389,6 @@ const styles = StyleSheet.create({
   menuPanel: {
     width: 280,
     height: "100%",
-    backgroundColor: "#fff",
     paddingTop: Platform.OS === "ios" ? 50 : 20,
     elevation: 6,
   },
@@ -392,13 +399,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
   },
-  menuTitle: { fontSize: 18, fontWeight: "bold", color: "#333" },
-  close: { fontSize: 22, color: "#666" },
+  menuTitle: { fontSize: 18, fontWeight: "bold" },
+  close: { fontSize: 22 },
   menuItem: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingVertical: 14 },
   menuIcon: { fontSize: 18, marginRight: 12 },
-  menuText: { fontSize: 16, color: "#333" },
+  menuText: { fontSize: 16 },
   
   // Language selector styles
   langRow: {
@@ -414,8 +420,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: "#e5e5e5",
-    backgroundColor: "#fafafa",
     alignItems: "center",
   },
   langChipActive: {
@@ -424,7 +428,6 @@ const styles = StyleSheet.create({
   },
   langChipText: {
     fontSize: 14,
-    color: "#444",
     fontWeight: "500",
   },
   langChipTextActive: {
@@ -434,6 +437,5 @@ const styles = StyleSheet.create({
   langHint: {
     marginTop: 8,
     fontSize: 12,
-    color: "#777",
   },
 });
